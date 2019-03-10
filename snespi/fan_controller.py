@@ -17,6 +17,10 @@ PWM_ON = 0
 
 class Configuration(object):
     @property
+    def debug(self):
+        return bool(int(self._config.get('General', 'Debug')))
+
+    @property
     def fan_pin(self):
         return self._int('FanPin')
 
@@ -74,11 +78,13 @@ class Configuration(object):
 class FanController(object):
     def __init__(self):
         self.configuration = Configuration()
+        self.debug = self.configuration.debug
         self.steps = self.configuration.get_steps()
         self._init_gpio()
 
     def start(self):
-        print('Starting fan controller')
+        if self.debug:
+            print('Starting fan controller')
         self.fan.start(PWM_OFF)
 
         while True:
@@ -92,12 +98,14 @@ class FanController(object):
                     if step_temperature >= cpu_temperature:
                         break
 
-            print('Temperature: {} PWM: {}'.format(cpu_temperature, pwm_to_set))
+            if self.debug:
+                print('Temperature: {} PWM: {}'.format(cpu_temperature, pwm_to_set))
             self.fan.ChangeDutyCycle(pwm_to_set)
             time.sleep(self.configuration.sleep_time)
 
     def stop(self):
-        print('Stopping fan controller')
+        if self.debug:
+            print('Stopping fan controller')
         GPIO.cleanup()
 
     def _get_temperature(self):
