@@ -1,12 +1,14 @@
 SUPER  NESPI CASE
 =================
 
+
 Requirements
 ------------
 - `Raspberry Pi <https://www.raspberrypi.org/>`_
 - `Super NESPi Case <http://snespi.com/>`_ (Important, **not** `Retroflag Case <http://retroflag.com/SUPERPi-CASE-J.html>`_!)
 - Python 2.7
 - `RPi.GPIO <https://sourceforge.net/projects/raspberry-gpio-python/>`_
+
 
 
 Installation
@@ -24,3 +26,13 @@ Temperature Fan Controller
 
             /usr/bin/python2.7 /home/pi/snespi/fan_controller.py
     c) Reboot: ``sudo reboot``
+
+
+License
+-------
+MIT
+
+
+Creator
+-------
+Daniel Kuruc
