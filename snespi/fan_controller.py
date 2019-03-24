@@ -17,11 +17,9 @@ settings = SNESPi.read_settings()
 FAN_TEMPERATURE_ON = settings.getint('Fan', 'temperature_on')
 FAN_SPEED_MIN_PWM = settings.getint('Fan', 'speed_min_pwm')
 FAN_SPEED_MAX_PWM = settings.getint('Fan', 'speed_max_pwm')
-
 PID_KP = settings.getfloat('Fan', 'pid_kp')
 PID_KI = settings.getfloat('Fan', 'pid_ki')
 PID_KD = settings.getfloat('Fan', 'pid_kd')
-
 FAN_GPIO_PIN = settings.getint('Fan', 'gpio_pin')
 PWM_FREQUENCY = settings.getint('Fan', 'pwm_frequency')
 
@@ -35,54 +33,44 @@ class FanController(SNESPi):
 
     _simulator_args_ = (
         SNESPi.SimulatorArg(
-            option_string='--temp-min',
+            option_string='--temp-min', type=int, default=DEFAULT_SIMULATION_TEMP_MIN,
             help='[°C] Min temperature in cycle',
-            type=int, default=DEFAULT_SIMULATION_TEMP_MIN,
         ),
         SNESPi.SimulatorArg(
-            option_string='--temp-max',
+            option_string='--temp-max', type=int, default=DEFAULT_SIMULATION_TEMP_MAX,
             help='[°C] Max temperature in cycle',
-            type=int, default=DEFAULT_SIMULATION_TEMP_MAX,
         ),
         SNESPi.SimulatorArg(
-            option_string='--cycles',
+            option_string='--cycles', type=int, default=DEFAULT_SIMULATION_CYCLES,
             help='Number of repeat cycles of simulation',
-            type=int, default=DEFAULT_SIMULATION_CYCLES,
         ),
         SNESPi.SimulatorArg(
-            option_string='--temperature-on',
+            option_string='--temperature-on', type=int, default=FAN_TEMPERATURE_ON,
             help='[°C] Temperature at which the fan will be turned on',
-            type=int, default=FAN_TEMPERATURE_ON,
         ),
         SNESPi.SimulatorArg(
-            option_string='--speed-min-pwm',
+            option_string='--speed-min-pwm', type=int, default=FAN_SPEED_MIN_PWM,
             help='[0-100%%] Minimum fan speed',
-            type=int, default=FAN_SPEED_MIN_PWM,
         ),
         SNESPi.SimulatorArg(
-            option_string='--speed-max-pwm',
+            option_string='--speed-max-pwm', type=int, default=FAN_SPEED_MAX_PWM,
             help='[0-100%%] Maximimum fan speed',
-            type=int, default=FAN_SPEED_MAX_PWM,
         ),
         SNESPi.SimulatorArg(
-            option_string='--pid-kp',
+            option_string='--pid-kp', type=float, default=PID_KP,
             help='The value for the proportional gain Kp of PID Controller',
-            type=float, default=PID_KP,
         ),
         SNESPi.SimulatorArg(
-            option_string='--pid-ki',
+            option_string='--pid-ki', type=float, default=PID_KI,
             help='The value for the integral gain Ki of PID Controller',
-            type=float, default=PID_KI,
         ),
         SNESPi.SimulatorArg(
-            option_string='--pid-kd',
+            option_string='--pid-kd', type=float, default=PID_KD,
             help='The value for the derivative gain Kd of PID Controller',
-            type=float, default=PID_KD,
         ),
         SNESPi.SimulatorArg(
-            option_string='--pwm-frequency',
+            option_string='--pwm-frequency', type=float, default=PWM_FREQUENCY,
             help='[Hz] PWM switching frequency',
-            type=float, default=PWM_FREQUENCY,
         ),
     )
     _simulator_help_ = (
@@ -108,13 +96,10 @@ class FanController(SNESPi):
     def loop_tick(self):
         cpu_temperature = self._get_temperature()
         duty_cycle = self.pid(-1 * cpu_temperature)
-
-        if duty_cycle == FAN_SPEED_MIN_PWM:
-            duty_cycle = PWM_MIN
+        duty_cycle = PWM_MIN if duty_cycle == FAN_SPEED_MIN_PWM else duty_cycle
 
         fan_speed = '%d%%' % duty_cycle
-        # Reversing PWM, because 0 = fan full speed / 100 - fan stopped
-        duty_cycle = 100 - duty_cycle
+        duty_cycle = 100 - duty_cycle  # Reversing PWM, because 0 = fan full speed / 100 - fan stopped
 
         if self.verbose:
             print 'Temperature: %d°C : Fan Speed: %s' % (cpu_temperature, fan_speed)
