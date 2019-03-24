@@ -1,0 +1,4 @@
+-r requirements.txt
+
+pycodestyle==2.5.0
+pylint==1.9.4
