@@ -27,9 +27,10 @@ Installation
 1. Install required Python packages::
 
       pip install -r requirements.txt
-2. All included scripts requires ``settings.ini`` file to be present in ``/home/pi/snespi/`` directory.
+2. Copy file ``_snespi.py`` file to ``/home/pi/snespi/`` directory.
+3. Copy file ``settings.ini`` file to ``/home/pi/snespi/`` directory.
 
-   | You can override default settings, by creating file ``settings.local.ini``, next to included ``settings.ini`` and selectively placing there your override values (BE CAREFUL! Setting incorrect settings may lead to board damage!)
+   | You can override default settings, by creating file ``settings.local.ini``, next to ``settings.ini`` and selectively placing there your override values (BE CAREFUL! Setting incorrect settings may lead to board damage!)
 
 
 Temperature Fan Controller
@@ -42,7 +43,7 @@ Temperature Fan Controller
 
    a. Run::
 
-         crontab -e
+         sudo crontab -e -u root
    b. Add new entry to crontab configuraion::
 
          @reboot /usr/bin/python2.7 /home/pi/snespi/fan_controller.py & > /dev/null 2>&1
@@ -52,7 +53,7 @@ Temperature Fan Controller
 
 License
 -------
-MIT
+`MIT <LICENSE>`_
 
 
 Creator
