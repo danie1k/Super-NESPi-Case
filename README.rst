@@ -1,11 +1,15 @@
 SUPER  NESPI CASE
 =================
 
+Python GPIO Tools for `Super NESPi Case <http://snespi.com/>`_.
+
+.. image:: snespi.jpg
+
 Tools Included
 --------------
 1. Temperature Fan Controller
 2. Soft Reset Button
-2. (Work In Progress) Soft Shutdown
+3. (Work In Progress) Soft Shutdown Button
 
 Requirements
 ------------
@@ -21,10 +25,6 @@ Temperature Fan Controller
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `mock <https://pypi.org/project/mock/>`_ Python package (for simulation mode)
 - `simple-pid <https://pypi.org/project/simple-pid/>`_ Python package
-
-Soft Reset Button
-~~~~~~~~~~~~~~~~~
-- `mock <https://pypi.org/project/mock/>`_ Python package (for simulation mode)
 
 
 Installation
@@ -81,7 +81,3 @@ License
 Creator
 -------
 Daniel Kuruc
-
-
-@reboot /usr/bin/python2.7 /home/pi/Super-NESPi-Case/snespi/fan_controller.py & > /dev/null 2>&1
-
