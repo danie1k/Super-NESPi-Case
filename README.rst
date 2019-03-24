@@ -4,7 +4,7 @@ SUPER  NESPI CASE
 Tools Included
 --------------
 1. Temperature Fan Controller
-2. (Work In Progress) Multi-Select Button
+2. Soft Reset Button
 2. (Work In Progress) Soft Shutdown
 
 Requirements
@@ -21,6 +21,10 @@ Temperature Fan Controller
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `mock <https://pypi.org/project/mock/>`_ Python package (for simulation mode)
 - `simple-pid <https://pypi.org/project/simple-pid/>`_ Python package
+
+Soft Reset Button
+~~~~~~~~~~~~~~~~~
+- `mock <https://pypi.org/project/mock/>`_ Python package (for simulation mode)
 
 
 Installation
@@ -51,6 +55,23 @@ Temperature Fan Controller
    c. Save file & close editor
    d. Reboot your RPi: ``sudo reboot``
 
+Soft Reset Button
+~~~~~~~~~~~~~~~~~
+1. Copy file following files to ``/home/pi/snespi/`` directory on your Raspberry Pi:
+
+   - ``soft_reset.py``
+   - ``settings.ini``
+2. Configure script autostart
+
+   a. Run::
+
+         sudo crontab -e -u root
+   b. Add new entry to crontab configuraion::
+
+         @reboot /usr/bin/python2.7 /home/pi/snespi/soft_reset.py & > /dev/null 2>&1
+   c. Save file & close editor
+   d. Reboot your RPi: ``sudo reboot``
+
 
 License
 -------
@@ -60,3 +81,7 @@ License
 Creator
 -------
 Daniel Kuruc
+
+
+@reboot /usr/bin/python2.7 /home/pi/Super-NESPi-Case/snespi/fan_controller.py & > /dev/null 2>&1
+
