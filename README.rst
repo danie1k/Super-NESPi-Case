@@ -3,8 +3,9 @@ SUPER  NESPI CASE
 
 Tools Included
 --------------
-1) Temperature Fan Controller
-
+1. Temperature Fan Controller
+2. (Work In Progress) Multi-Select Button
+2. (Work In Progress) Soft Shutdown
 
 Requirements
 ------------
