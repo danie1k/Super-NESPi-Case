@@ -75,7 +75,7 @@ class FanController(SNESPi):
     )
     _simulator_help_ = (
         'Simulation will REALLY RUN your fan with given settings. '
-        'This mode generates fake temperature reads in given number of \'cycles\'. '
+        'This mode generates fake temperature reads in given number of \'cycles\'.'
     )
 
     fan = None
@@ -99,7 +99,7 @@ class FanController(SNESPi):
         duty_cycle = PWM_MIN if duty_cycle == FAN_SPEED_MIN_PWM else duty_cycle
 
         fan_speed = '%d%%' % duty_cycle
-        duty_cycle = 100 - duty_cycle  # Reversing PWM, because 0 = fan full speed / 100 - fan stopped
+        duty_cycle = PWM_FULL - duty_cycle  # Reversing PWM, because 0 = fan full speed / 100 = fan stopped
 
         if self.verbose:
             print 'Temperature: %d°C : Fan Speed: %s' % (cpu_temperature, fan_speed)

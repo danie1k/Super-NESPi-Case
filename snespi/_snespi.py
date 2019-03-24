@@ -10,10 +10,11 @@ from collections import namedtuple
 try:
     import RPi.GPIO as GPIO
 except (ImportError, RuntimeError):
+    from mock import MagicMock
+    GPIO = MagicMock()
     print '---------------------------------------------------------------'
     print 'Running outside Raspberry Pi, GPIO functions has been disabled!'
     print '---------------------------------------------------------------'
-    GPIO = False
 
 PWD = os.path.dirname(os.path.realpath(__file__))
 
@@ -50,8 +51,7 @@ class SNESPi(object):
         self._start()
 
     def _start(self):
-        if GPIO:
-            self._init_gpio()
+        self._init_gpio()
 
         self.loop_init()
 
@@ -68,8 +68,7 @@ class SNESPi(object):
     def _stop(self):
         if self.verbose:
             print 'Stopping %s' % self._controller_name_
-        if GPIO:
-            GPIO.cleanup()
+        GPIO.cleanup()
 
     def _init_gpio(self):
         GPIO.setmode(GPIO.BOARD)
@@ -122,7 +121,7 @@ class SNESPi(object):
                 controller._simulate(**parser_options.__dict__)
             else:
                 controller._start()
-        except Exception as ex:
+        except Exception as ex:  # pylint:disable=broad-except
             print 'ERROR: %s ' % ex
             sys.exit()
         finally:
