@@ -50,12 +50,13 @@ class SNESPi(object):
         self._start()
 
     def _start(self):
-        self.loop_init()
-        assert self.sleep_time > 0, 'Setting \'sleep_time\' must be > 0'
-        self.validate_configuration()
-
         if GPIO:
             self._init_gpio()
+
+        self.loop_init()
+
+        assert self.sleep_time > 0, 'Setting \'sleep_time\' must be > 0'
+        self.validate_configuration()
 
         if self.verbose:
             print 'Starting %s' % self._controller_name_
@@ -121,6 +122,9 @@ class SNESPi(object):
                 controller._simulate(**parser_options.__dict__)
             else:
                 controller._start()
+        except Exception as ex:
+            print 'ERROR: %s ' % ex
+            sys.exit()
         finally:
             controller._stop()
             sys.exit()
